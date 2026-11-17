@@ -1,4 +1,4 @@
-name: Test and generate neuron visualizations
+name: Test model and web app
 
 on:
   push:
@@ -19,17 +19,31 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: pip install -r requirements.txt
-      - name: Run unit tests
+      - name: Test NumPy neural network
         run: python -m pytest -q tests
       - name: Train model and generate charts
         run: python -m src.train
+      - name: Export genuine trained weights for web inference
+        run: python -m src.export_web_model
       - name: Generate neuron-learning animation
         run: python -m src.animate
       - name: Generate animated neon banner
         run: python -m src.banner_animation
-      - name: Verify outputs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install web dependencies
+        working-directory: web
+        run: npm install --no-audit --no-fund
+      - name: Test JavaScript inference against Python
+        working-directory: web
+        run: npm test
+      - name: Build React web app
+        working-directory: web
+        run: npm run build
+      - name: Verify exported assets
         run: |
           test -s outputs/metrics.json
           test -s outputs/model.npz
@@ -37,13 +51,16 @@ jobs:
           test -s outputs/neuron_weights.png
           test -s outputs/neuron_learning.gif
           test -s assets/neuron-vision-animated.gif
-      - name: Publish visualizations to repository
+          test -s web/public/model.json
+          test -s web/public/examples.json
+          test -s web/dist/index.html
+      - name: Publish reproducible model assets
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add outputs/metrics.json outputs/model.npz outputs/training_curves.png outputs/neuron_weights.png outputs/neuron_learning.gif assets/neuron-vision-animated.gif
+          git add outputs/metrics.json outputs/model.npz outputs/training_curves.png outputs/neuron_weights.png outputs/neuron_learning.gif assets/neuron-vision-animated.gif web/public/model.json web/public/examples.json
           if ! git diff --cached --quiet; then
-            git commit -m "docs: publish reproducible model visuals [skip ci]"
+            git commit -m "build: export model and refresh visualizations [skip ci]"
             git push
           fi
