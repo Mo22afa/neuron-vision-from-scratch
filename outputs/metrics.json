@@ -1,0 +1,7 @@
+{
+  "train_samples": 1257,
+  "validation_samples": 270,
+  "test_samples": 270,
+  "test_loss": 0.07718767001018566,
+  "test_accuracy": 0.9814814814814815
+}
