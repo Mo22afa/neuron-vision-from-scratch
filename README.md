@@ -1,11 +1,33 @@
-# Neuron Vision — Neural Network from Scratch
+<div align="center">
 
-[![Python tests](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml/badge.svg)](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml)
+![Neuron Vision banner](assets/neuron-vision-banner.svg)
+
+### Watch a neural network learn — one neuron at a time.
+
+**From-scratch NumPy MLP · Handwritten digit recognition · Interactive neuron exploration**
+
+[![Tests](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml/badge.svg)](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mo22afa/neuron-vision-from-scratch/blob/main/neuron_vision_colab.ipynb)
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![NumPy](https://img.shields.io/badge/Neural%20Network-NumPy%20Only-16A085)
 
-**Understand what individual neurons learn.** A fully connected neural network built from scratch with Python and NumPy, including manual backpropagation, gradient checking, interactive activations, and an animated view of learning.
+**[▶ Launch Interactive Colab](https://colab.research.google.com/github/Mo22afa/neuron-vision-from-scratch/blob/main/neuron_vision_colab.ipynb)** · **[View Source](src/neural_network.py)** · **[See Tests](tests/test_neural_network.py)**
 
-![32 hidden neurons learning over 150 epochs](outputs/neuron_learning.gif)
+</div>
+
+---
+
+## The demo: see learning in motion
+
+<div align="center">
+
+![Animated visualization of all 32 hidden neurons learning](outputs/neuron_learning.gif)
+
+*32 learned 8×8 weight maps evolve across 150 epochs. The right panels show a sample input, hidden-layer activations, and output probabilities.*
+
+</div>
+
+> **What makes this project different?** It's not just a classifier. It exposes the learned weights of each hidden neuron, lets you inspect activations for different test digits, and checks backpropagation against numerical gradients — without a deep-learning framework.
 
 ## Results
 
@@ -22,7 +44,7 @@
 
 Dataset splitting is stratified and seeded. The test set is never used to update weights.
 
-## Explore the visualizations
+## Inside the network · interactive insights
 
 | Training and validation | Learned input weights of the 32 hidden neurons |
 |:--:|:--:|
@@ -32,7 +54,7 @@ The heatmaps show each hidden neuron's **64 learned input weights**, reshaped in
 
 In the [interactive notebook](neuron_vision_colab.ipynb), use sliders to select a test image and a hidden neuron to inspect its weights, activation, and class predictions.
 
-## How it works
+## Under the hood
 
 For a batch of input images `X`:
 
@@ -47,7 +69,7 @@ The model computes analytical derivatives using the chain rule and updates weigh
 
 **No TensorFlow or PyTorch is used.**
 
-## Run
+## Try it yourself
 
 Use the **Open in Colab** badge above for the full interactive experience.
 
