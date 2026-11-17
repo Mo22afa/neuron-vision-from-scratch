@@ -4,6 +4,14 @@
 
 ### Watch a neural network learn — one neuron at a time.
 
+**NEW: Interactive React demo** — draw digits with your mouse or finger, watch a genuine 64 → 32 → 10 NumPy model classify them, and inspect live neuron activations with an animated network diagram.
+
+**[View the web app source](web/)** · **[Open the Colab notebook](https://colab.research.google.com/github/Mo22afa/neuron-vision-from-scratch/blob/main/neuron_vision_colab.ipynb)**
+
+> **One-time GitHub Pages setup:** open [Settings → Pages](https://github.com/Mo22afa/neuron-vision-from-scratch/settings/pages) and set **Build and deployment → Source → GitHub Actions**. Then rerun [Deploy interactive web demo to GitHub Pages](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/deploy-pages.yml). The published URL will be **https://mo22afa.github.io/neuron-vision-from-scratch/**.
+
+
+
 **From-scratch NumPy MLP · Handwritten digit recognition · Interactive neuron exploration**
 
 [![Tests](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml/badge.svg)](https://github.com/Mo22afa/neuron-vision-from-scratch/actions/workflows/tests.yml)
@@ -69,6 +77,32 @@ The model computes analytical derivatives using the chain rule and updates weigh
 
 **No TensorFlow or PyTorch is used.**
 
+## Interactive digit recognition web app
+
+The `web/` folder is a complete React + Vite site with:
+
+- White-on-black drawing canvas, supporting touch and mouse
+- Live per-class probability cards (0–9) and top predicted digit
+- 8×8 normalized input monitor, crop-and-center preprocessing, and real-time inference
+- Animated diagram of the **actual 64 input, 32 hidden, and 10 output neurons**
+- Clickable hidden neurons with their live tanh activation values
+- Ten held-out Digits examples for reproducible demonstrations
+- Responsive dark/neon layout with reduced-motion accessibility
+- Python→JavaScript inference parity tests
+
+The exported weights and sample data are generated automatically from the original Python model with `python -m src.export_web_model`. The network stays an **MLP (not a CNN)**; freehand drawing accuracy can differ from 98.15% test accuracy on scikit-learn Digits.
+
+### Run the interactive site locally
+
+```bash
+python -m src.train
+python -m src.export_web_model
+cd web
+npm install
+npm test
+npm run dev
+```
+
 ## Try it yourself
 
 Use the **Open in Colab** badge above for the full interactive experience.
@@ -89,6 +123,7 @@ Results are written to `outputs/` as model weights (`model.npz`), evaluation met
 ```text
 neuron-vision-from-scratch/
 ├── neuron_vision_colab.ipynb     # Interactive notebook
+├── web/                          # React/Vite demo and parity tests
 ├── src/
 │   ├── __init__.py
 │   ├── neural_network.py        # NumPy MLP + backpropagation
