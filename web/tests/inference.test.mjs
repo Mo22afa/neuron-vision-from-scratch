@@ -16,7 +16,7 @@ test('8×8 grayscale values stay normalized', () => {
   rgba[3] = 255;
   const pixels = grayscalePixels(rgba);
   assert.equal(pixels.length, 64);
-  assert.equal(pixels[0], 1);
+  assert.ok(Math.abs(pixels[0] - 1) < 1e-12);
   assert.equal(pixels[1], 0);
 });
 
