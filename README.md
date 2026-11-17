@@ -1,6 +1,6 @@
 <div align="center">
 
-![Neuron Vision banner](assets/neuron-vision-banner.svg)
+![Animated Neuron Vision neon banner](assets/neuron-vision-animated.gif)
 
 ### Watch a neural network learn — one neuron at a time.
 
