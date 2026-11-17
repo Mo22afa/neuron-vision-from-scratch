@@ -1,16 +1,46 @@
-name: Python tests
+name: Test and generate neuron visualizations
 
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  test:
+  test-and-visualize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - run: python -m pytest -q tests
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m pytest -q tests
+      - name: Train model and generate charts
+        run: python -m src.train
+      - name: Generate neuron-learning animation
+        run: python -m src.animate
+      - name: Verify outputs
+        run: |
+          test -s outputs/metrics.json
+          test -s outputs/model.npz
+          test -s outputs/training_curves.png
+          test -s outputs/neuron_weights.png
+          test -s outputs/neuron_learning.gif
+      - name: Publish visualizations to repository
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/metrics.json outputs/model.npz outputs/training_curves.png outputs/neuron_weights.png outputs/neuron_learning.gif
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: publish reproducible model visuals [skip ci]"
+            git push
+          fi
